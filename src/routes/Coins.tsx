@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -67,24 +66,6 @@ function Coins() {
   // const [coins, setCoins] = useState<CoinInterface[]>([]);
 
   const { data, isLoading } = useQuery<ICoin[]>("coins", fetchCoins);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const data = await (
-  //         await fetch("http://api.coinpaprika.com/v1/coins")
-  //       ).json();
-
-  //       console.log(data);
-
-  //       setCoins(data.slice(0, 10));
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-
-  //     setLoading(false);
-  //   })();
-  // }, []);
 
   return (
     <Container>

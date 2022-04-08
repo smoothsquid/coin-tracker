@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import {
   NavLink,
@@ -158,37 +157,12 @@ function Coin() {
     () => fetchCoinTickers(coinId)
   );
 
-  // const [loading, setLoading] = useState(true);
-  // const [info, setInfo] = useState<InfoData>();
-  // const [priceInfo, setPriceInfo] = useState<PriceData>();
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const infoData = await (
-  //       await fetch(`http://api.coinpaprika.com/v1/coins/${coinId}`)
-  //     ).json();
-
-  //     console.log(infoData);
-
-  //     const priceData = await (
-  //       await fetch(`http://api.coinpaprika.com/v1/tickers/${coinId}`)
-  //     ).json();
-
-  //     console.log(priceData);
-
-  //     setInfo(infoData);
-  //     setPriceInfo(priceData);
-
-  //     setLoading(false);
-  //   })();
-  // }, [coinId]);
-
   return (
     <Container>
       <Header>
         <Title>{state?.name || infoData?.name || "Loading..."}</Title>
       </Header>
-      {infoLoading ? (
+      {infoLoading || tickersLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
