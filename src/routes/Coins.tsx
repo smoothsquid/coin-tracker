@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -38,6 +39,7 @@ const Coin = styled.li`
 
 const Title = styled.h1`
   font-size: 48px;
+  font-weight: bold;
   color: ${(props) => props.theme.accentColor};
 `;
 
@@ -52,6 +54,20 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
+const DarkModeToggleButton = styled.button`
+  position: fixed;
+  left: 5vw;
+  top: 4vh;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+`;
+
 interface ICoin {
   id: string;
   name: string;
@@ -63,12 +79,13 @@ interface ICoin {
 }
 
 function Coins() {
-  // const [coins, setCoins] = useState<CoinInterface[]>([]);
-
   const { data, isLoading } = useQuery<ICoin[]>("coins", fetchCoins);
 
   return (
     <Container>
+      <Helmet>
+        <title>코인</title>
+      </Helmet>
       <Header>
         <Title>코인</Title>
       </Header>
@@ -88,6 +105,7 @@ function Coins() {
           ))}
         </CoinsList>
       )}
+      <DarkModeToggleButton>Dark</DarkModeToggleButton>
     </Container>
   );
 }

@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import {
   NavLink,
@@ -5,6 +6,7 @@ import {
   Routes,
   useLocation,
   useMatch,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
@@ -27,6 +29,7 @@ const Header = styled.header`
 
 const Title = styled.h1`
   font-size: 48px;
+  font-weight: bold;
   color: ${(props) => props.theme.accentColor};
 `;
 
@@ -79,6 +82,20 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
+const BackButton = styled.button`
+  position: fixed;
+  left: 5vw;
+  top: 4vh;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+`;
+
 interface RouteParams {
   coinId: string;
 }
@@ -108,7 +125,7 @@ interface InfoData {
   last_data_at: string;
 }
 
-interface PriceData {
+export interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -147,6 +164,7 @@ function Coin() {
 
   const state = useLocation().state as RouteState;
   const match = useMatch(":coinId/:path");
+  const navigate = useNavigate();
 
   const { data: infoData, isLoading: infoLoading } = useQuery<InfoData>(
     ["coins", coinId],
@@ -154,14 +172,20 @@ function Coin() {
   );
   const { data: tickersData, isLoading: tickersLoading } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId)
+    () => fetchCoinTickers(coinId),
+    { refetchInterval: 5000 }
   );
 
   return (
     <Container>
+      <Helmet>
+        <title>{state?.name || infoData?.name || "Loading..."}</title>
+      </Helmet>
+
       <Header>
         <Title>{state?.name || infoData?.name || "Loading..."}</Title>
       </Header>
+
       {infoLoading || tickersLoading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -176,19 +200,23 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>
+                {`$${tickersData?.quotes.USD.price.toLocaleString(undefined, {
+                  maximumFractionDigits: 5,
+                })}`}
+              </span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>Total Suply:</span>
-              <span>{tickersData?.total_supply}</span>
+              <span>Total Supply:</span>
+              <span>{tickersData?.total_supply.toLocaleString()}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{tickersData?.max_supply}</span>
+              <span>{tickersData?.max_supply.toLocaleString()}</span>
             </OverviewItem>
           </Overview>
 
@@ -212,11 +240,18 @@ function Coin() {
           </Tabs>
 
           <Routes>
-            <Route path="price" element={<Price />} />
+            <Route path="price" element={<Price priceData={tickersData} />} />
             <Route path="chart" element={<Chart coinId={coinId} />} />
           </Routes>
         </>
       )}
+      <BackButton
+        onClick={() => {
+          navigate("../");
+        }}
+      >
+        &larr;
+      </BackButton>
     </Container>
   );
 }
