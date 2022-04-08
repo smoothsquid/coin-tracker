@@ -153,7 +153,7 @@ function Coin() {
     () => fetchCoin(coinId)
   );
   const { data: tickersData, isLoading: tickersLoading } = useQuery<PriceData>(
-    ["coins", coinId, "tickers"],
+    ["tickers", coinId],
     () => fetchCoinTickers(coinId)
   );
 
@@ -193,14 +193,6 @@ function Coin() {
           </Overview>
 
           <Tabs>
-            <Tab isActive={match?.params.path === "price"}>
-              <NavLink
-                to="price"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                Price
-              </NavLink>
-            </Tab>
             <Tab isActive={match?.params.path === "chart"}>
               <NavLink
                 to="chart"
@@ -209,11 +201,19 @@ function Coin() {
                 Chart
               </NavLink>
             </Tab>
+            <Tab isActive={match?.params.path === "price"}>
+              <NavLink
+                to="price"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Price
+              </NavLink>
+            </Tab>
           </Tabs>
 
           <Routes>
             <Route path="price" element={<Price />} />
-            <Route path="chart" element={<Chart />} />
+            <Route path="chart" element={<Chart coinId={coinId} />} />
           </Routes>
         </>
       )}
