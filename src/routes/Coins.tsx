@@ -67,7 +67,7 @@ const DarkModeToggleButton = styled.button`
   border: none;
   color: ${({ theme }) => theme.textColor};
   font-size: 18px;
-  background-image: url("/moon-light.svg");
+  background-image: url(moon-light.svg);
   cursor: pointer;
 `;
 
