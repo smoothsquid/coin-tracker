@@ -1,7 +1,7 @@
 import ApexCharts from "react-apexcharts";
 import { useQuery } from "react-query";
+import { useTheme } from "styled-components";
 import { fetchCoinHistory } from "../api";
-import { theme } from "../theme";
 
 interface ChartProps {
   coinId: string;
@@ -23,6 +23,8 @@ export default function Chart({ coinId }: ChartProps) {
     ["coins", coinId, "ohlcv", "historical"],
     () => fetchCoinHistory(coinId)
   );
+
+  const theme = useTheme();
 
   return (
     <>

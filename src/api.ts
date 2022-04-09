@@ -11,7 +11,7 @@ export async function fetchCoin(coinId: string) {
 }
 
 export async function fetchCoinTickers(coinId: string) {
-  return fetch(`${BASE_URL}/tickers/${coinId}?quote=btc`).then((response) =>
+  return fetch(`${BASE_URL}/tickers/${coinId}`).then((response) =>
     response.json()
   );
 }

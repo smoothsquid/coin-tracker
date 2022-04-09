@@ -1,6 +1,8 @@
 import Router from "./Router";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { darkTheme, lightTheme } from "./theme";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle/*css*/ `
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
@@ -66,11 +68,21 @@ a {
 `;
 
 function App() {
+  const [isDarkTheme, setDarkTheme] = useState(true);
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        <button
+          onClick={() => {
+            setDarkTheme((current) => !current);
+          }}
+        >
+          Switch Theme
+        </button>
+        <GlobalStyle />
+        <Router />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </ThemeProvider>
     </>
   );
 }
