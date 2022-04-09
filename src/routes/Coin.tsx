@@ -36,7 +36,7 @@ const Title = styled.h1`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.cardBgColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -72,7 +72,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.cardBgColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -89,9 +89,9 @@ const BackButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.cardBgColor};
+  color: ${({ theme }) => theme.textColor};
   border: none;
-  color: #fff;
   font-size: 18px;
   cursor: pointer;
 `;

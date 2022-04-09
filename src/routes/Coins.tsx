@@ -1,8 +1,10 @@
 import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -20,8 +22,8 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: ${({ theme }) => theme.textColor};
-  color: ${({ theme }) => theme.bgColor};
+  background-color: ${({ theme }) => theme.cardBgColor};
+  color: ${({ theme }) => theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
   a {
@@ -61,10 +63,11 @@ const DarkModeToggleButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: transparent;
   border: none;
-  color: #fff;
+  color: ${({ theme }) => theme.textColor};
   font-size: 18px;
+  background-image: url("/moon-light.svg");
   cursor: pointer;
 `;
 
@@ -80,6 +83,9 @@ interface ICoin {
 
 function Coins() {
   const { data, isLoading } = useQuery<ICoin[]>("coins", fetchCoins);
+
+  const setDark = useSetRecoilState(isDarkAtom);
+  const toggleDark = () => setDark((prev) => !prev);
 
   return (
     <Container>
@@ -105,7 +111,7 @@ function Coins() {
           ))}
         </CoinsList>
       )}
-      <DarkModeToggleButton>Dark</DarkModeToggleButton>
+      <DarkModeToggleButton onClick={toggleDark}></DarkModeToggleButton>
     </Container>
   );
 }
